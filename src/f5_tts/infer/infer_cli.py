@@ -97,8 +97,8 @@ from hydra.utils import get_class
 from omegaconf import OmegaConf
 from unidecode import unidecode
 
-import torch #추가됨
-import torch.nn.functional as F #추가됨
+import torch 
+import torch.nn.functional as F 
 
 from f5_tts.infer.utils_infer import (
     cfg_strength,
@@ -260,7 +260,7 @@ parser.add_argument(
     type=str,
     help="Specify the device to run on",
 )
-##################################### 아래 코드 추가됨
+
 parser.add_argument(
     "--steer_mode",
     type=str,
@@ -346,7 +346,7 @@ parser.add_argument(
     default=None,
     help="Filter specific speakers (e.g., '0011-0020' for speakers 11-20, or '0011,0015,0018' for specific speakers)",
 )
-##################################### 위에 코드 추가됨
+
 args = parser.parse_args()
 
 
@@ -469,7 +469,7 @@ ema_model = load_model(
 )
 
 
-##################################### 아래 코드 추가됨
+
 
 # Helper functions for activation steering
 def parse_layer_selection(selection, total_layers):
@@ -785,7 +785,7 @@ def evaluate_tokens_with_ser(
 
     return emotion_probs
 
-##################################### 위에 코드 추가됨
+
 
 # inference process
 
@@ -807,7 +807,7 @@ def main():
 
     generated_audio_segments = []
 
-    ##################################### 아래 코드 추가됨
+
     # === Activation Steering Setup ===
     # Initialize all transformer blocks with default values
     for block in ema_model.transformer.transformer_blocks:
@@ -1138,7 +1138,6 @@ def main():
             vec_norm = steering_vectors[vec_idx].norm(p=2).item()
             print(f"[Steering] Layer {layer_idx}: vector norm={vec_norm:.4f}, alpha={steer_alpha}")
 
-    ##################################### 위에 코드 추가됨
 
     reg1 = r"(?=\[\w+\])"
     chunks = re.split(reg1, gen_text)
@@ -1179,7 +1178,7 @@ def main():
             device=device,
         )
 
-        ##################################### 아래 코드 추가됨
+
         # ----------------------------
         # inference 후 residual 저장
         # ----------------------------
@@ -1206,7 +1205,7 @@ def main():
             save_path = os.path.join(steer_output_dir, filename)
             torch.save(collected, save_path)
             print(f"[Steering] Saved residual → {save_path}")
-        ##################################### 위에 코드 추가됨
+
 
        
         generated_audio_segments.append(audio_segment)
